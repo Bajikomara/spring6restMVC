@@ -1,5 +1,5 @@
 package baji.springframework.spring6restmvc.model;
 
 public enum BeerStyle {
-    Pale_Ale
+    LAGER, PILSNER, STOUT, GOSE, PORTER, ALE, WHEAT, IPA, PALE_ALE, SAISON
 }
