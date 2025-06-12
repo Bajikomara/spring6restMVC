@@ -4,6 +4,9 @@ package baji.springframework.spring6restmvc.Controller;
 import baji.springframework.spring6restmvc.model.Customer;
 import baji.springframework.spring6restmvc.services.CustomerService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,6 +17,14 @@ import java.util.UUID;
 @RequestMapping("/api/v1/customer")
 public class CustomerController {
     private final CustomerService customerService;
+
+    @PostMapping
+    public ResponseEntity handlepost(@RequestBody Customer customer) {
+        Customer savedCustomer = customerService.saveNewCustomer(customer);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Location", "api/v2/customer/" + savedCustomer.getId());
+        return new ResponseEntity(headers, HttpStatus.CREATED);
+    }
 
     @RequestMapping(method = RequestMethod.GET)
     public List<Customer> getAllCustomers() {
