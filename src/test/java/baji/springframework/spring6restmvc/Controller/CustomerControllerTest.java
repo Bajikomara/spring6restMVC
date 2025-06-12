@@ -1,6 +1,6 @@
 package baji.springframework.spring6restmvc.Controller;
 
-import baji.springframework.spring6restmvc.model.Customer;
+import baji.springframework.spring6restmvc.model.CustomerDTO;
 import baji.springframework.spring6restmvc.services.CustomerService;
 import baji.springframework.spring6restmvc.services.CustomerServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,7 +19,6 @@ import java.util.Map;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
@@ -45,7 +44,7 @@ class CustomerControllerTest {
     @Captor
     ArgumentCaptor<UUID> uuidArgumentCaptor;
     @Captor
-    ArgumentCaptor<Customer> customerCaptor;
+    ArgumentCaptor<CustomerDTO> customerCaptor;
 
 
     @BeforeEach
@@ -55,7 +54,7 @@ class CustomerControllerTest {
 
     @Test
     void testPatchBeer() throws Exception {
-        Customer customer = customerServiceImpl.listCustomers().get(0);
+        CustomerDTO customer = customerServiceImpl.listCustomers().get(0);
         Map<String, Object> customerMap = new HashMap<>();
         customerMap.put("name", "New Name");
 
@@ -71,7 +70,7 @@ class CustomerControllerTest {
 
     @Test
     void testDeleteBeer() throws Exception {
-        Customer customer = customerServiceImpl.listCustomers().get(0);
+        CustomerDTO customer = customerServiceImpl.listCustomers().get(0);
         mockMvc.perform(delete("/api/v1/customer/" + customer.getId())
         .accept(MediaType.APPLICATION_JSON))
         .andExpect(status().isNoContent());
@@ -84,24 +83,24 @@ class CustomerControllerTest {
 
     @Test
     void testUpdateBeer() throws Exception {
-        Customer customer = customerServiceImpl.listCustomers().get(0);
+        CustomerDTO customer = customerServiceImpl.listCustomers().get(0);
 
         mockMvc.perform(put("/api/v1/customer/" + customer.getId())
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(customer)))
                 .andExpect(status().isNoContent());
-        verify(customerService).updateCustomerByID(any(UUID.class), any(Customer.class));
+        verify(customerService).updateCustomerByID(any(UUID.class), any(CustomerDTO.class));
 //            verify(customerService).updateCustomerByID(uuidArgumentCaptor.capture(), customerCaptor.capture());
     }
 
     @Test
     void testCreateNewCustomer() throws Exception {
-        Customer customer = customerServiceImpl.listCustomers().get(0);
+        CustomerDTO customer = customerServiceImpl.listCustomers().get(0);
         customer.setVersion(null);
         customer.setId(null);
 
-        given(customerService.saveNewCustomer(any(Customer.class))).willReturn(customerServiceImpl.listCustomers().get(1));
+        given(customerService.saveNewCustomer(any(CustomerDTO.class))).willReturn(customerServiceImpl.listCustomers().get(1));
         mockMvc.perform(post("/api/v1/customer")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -131,7 +130,7 @@ class CustomerControllerTest {
 
     @Test
     void getCustomerById() throws Exception {
-        Customer testCustomer = customerServiceImpl.listCustomers().get(0);
+        CustomerDTO testCustomer = customerServiceImpl.listCustomers().get(0);
         given(customerService.getCustomerById(testCustomer.getId())).willReturn(testCustomer);
         mockMvc.perform(get("/api/v1/customer/" + testCustomer.getId())
         .accept(MediaType.APPLICATION_JSON))
