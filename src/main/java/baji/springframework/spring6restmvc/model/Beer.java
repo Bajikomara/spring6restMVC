@@ -12,10 +12,10 @@ import java.util.UUID;
 public class Beer   {
     private UUID id;
     private Integer version;
-    private String beername;
+    private String beerName;
     private BeerStyle beerStyle;
     private String upc;
-    private Integer qunatityOnHand;
+    private Integer quantityOnHand;
     private BigDecimal price;
     private LocalDateTime createdDate;
     private LocalDateTime updateDate;
