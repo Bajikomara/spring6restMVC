@@ -17,6 +17,11 @@ import java.util.UUID;
 @RequestMapping("/api/v1/customer")
 public class CustomerController {
     private final CustomerService customerService;
+    @PutMapping("{customerId}")
+    public ResponseEntity updateById(@PathVariable("customerId") UUID customerId,@RequestBody Customer customer) {
+        customerService.updateCustomerByID(customerId, customer);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
 
     @PostMapping
     public ResponseEntity handlepost(@RequestBody Customer customer) {
