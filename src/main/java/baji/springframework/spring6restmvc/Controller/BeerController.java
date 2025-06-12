@@ -21,7 +21,7 @@ import java.util.UUID;
 public class BeerController {
     private final BeerService beerService;
 
-    public static final String BEER_PATH = "/api/v1/beer/";
+    public static final String BEER_PATH = "/api/v1/beer";
     public static final String BEER_PATH_ID = BEER_PATH + "/{beerId}";
 
     @PatchMapping({"{beerId}"})
@@ -64,11 +64,7 @@ public class BeerController {
         return beerService.listBeers();
     }
 
-    @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity handleNotFoundException(){
-        System.out.println("In Exception handler");
-        return  ResponseEntity.notFound().build();
-    }
+
 
     @RequestMapping(value = "{beerId}", method = RequestMethod.GET)
     public Beer getBeerById(@PathVariable("beerId") UUID beerId) {
