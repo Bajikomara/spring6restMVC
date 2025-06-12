@@ -21,6 +21,9 @@ import java.util.UUID;
 public class BeerController {
     private final BeerService beerService;
 
+    public static final String BEER_PATH = "/api/v1/beer/";
+    public static final String BEER_PATH_ID = BEER_PATH + "/{beerId}";
+
     @PatchMapping({"{beerId}"})
     public ResponseEntity updateBeerPatchByID(@PathVariable("beerId")UUID beerId, @RequestBody Beer beer){
         beerService.patchBeerById(beerId, beer);
