@@ -3,6 +3,8 @@ package baji.springframework.spring6restmvc.Controller;
 import baji.springframework.spring6restmvc.model.Beer;
 import baji.springframework.spring6restmvc.services.BeerService;
 import baji.springframework.spring6restmvc.services.BeerServiceImpl;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -30,10 +32,20 @@ class BeerControllerTest {
     @Autowired
     MockMvc mockMvc;
 
+    @Autowired
+    ObjectMapper objectMapper;
+
     @MockitoBean
     BeerService beerService;
 
     BeerServiceImpl beerServiceimpl = new BeerServiceImpl();
+
+    @Test
+    void tetstCreateNewBeer() throws JsonProcessingException {
+        Beer beer = beerServiceimpl.listBeers().get(0);
+
+        System.out.println(objectMapper.writeValueAsString(beer));
+    }
 
     @Test
     void testListBeers() throws Exception {
