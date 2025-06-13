@@ -8,7 +8,10 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
+
 @Service
 @Primary
 @RequiredArgsConstructor
@@ -18,12 +21,17 @@ public class BeerServiceJPA implements BeerService {
 
     @Override
     public List<BeerDTO> listBeers() {
-        return List.of();
+        return beerRepository.findAll()
+                .stream()
+                .map(beerMapper::beerTobeerDtoo)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public BeerDTO getBeerById(UUID id) {
-        return null;
+    public Optional<BeerDTO> getBeerById(UUID id) {
+
+        return Optional.ofNullable(beerMapper.beerTobeerDtoo(beerRepository.findById(id)
+                .orElse(null)));
     }
 
     @Override

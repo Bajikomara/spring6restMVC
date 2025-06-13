@@ -21,6 +21,7 @@ import static org.hamcrest.core.Is.is;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -139,7 +140,7 @@ class BeerControllerTest {
     void getBeerById() throws Exception {
 
         BeerDTO testBeer = beerServiceimpl.listBeers().get(0);
-        given(beerService.getBeerById(testBeer.getId())).willReturn(testBeer);
+        given(beerService.getBeerById(testBeer.getId())).willReturn(Optional.of(testBeer));
         mockMvc.perform(get("/api/v1/beer/" + testBeer.getId())
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
