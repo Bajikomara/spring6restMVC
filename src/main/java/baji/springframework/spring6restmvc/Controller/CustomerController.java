@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -43,7 +44,7 @@ public class CustomerController {
     }
 
     @PostMapping
-    public ResponseEntity handlepost(@RequestBody CustomerDTO customer) {
+    public ResponseEntity handlepost(@Validated @RequestBody CustomerDTO customer) {
         CustomerDTO savedCustomer = customerService.saveNewCustomer(customer);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Location", "api/v2/customer/" + savedCustomer.getId());
