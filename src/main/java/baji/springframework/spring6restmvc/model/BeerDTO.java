@@ -20,6 +20,7 @@ public class BeerDTO {
     private String beerName;
 
     @NotNull
+
     private BeerStyle beerStyle;
 
     @NotBlank

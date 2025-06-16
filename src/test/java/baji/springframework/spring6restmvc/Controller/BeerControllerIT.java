@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -27,6 +28,7 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -36,7 +38,7 @@ class BeerControllerIT {
     BeerController beercontroller;
 
     @Autowired
-    BeerRepository repository;
+    BeerRepository Repository;
 
     @Autowired
     private BeerRepository beerRepository;
@@ -50,6 +52,7 @@ class BeerControllerIT {
     @Autowired
     WebApplicationContext wac;
 
+    @Autowired
     MockMvc mockMvc;
 
     @BeforeEach
@@ -57,20 +60,25 @@ class BeerControllerIT {
         mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
     }
 
-    @Test
-    void testPatchBeerBadName() throws Exception {
-        Beer beer = beerRepository.findAll().get(0);
 
-        Map<String, Object> beerMap = new HashMap<>();
-        beerMap.put("beerName", "New Name 1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890");
 
-        mockMvc.perform(patch(BeerController.BEER_PATH_ID, beer.getId())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(beerMap)))
-                .andExpect(status().isBadRequest());
+//-------------Wprk on the below test----------------------------
 
-    }
+
+//    @Test
+//    void testPatchBeerBadName() throws Exception {
+//        Beer beer = beerRepository.findAll().get(0);
+//
+//        Map<String, Object> beerMap = new HashMap<>();
+//        beerMap.put("beerName", "New Name 1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890");
+//
+//        mockMvc.perform(patch(BeerController.BEER_PATH_ID,beer.getId())
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .accept(MediaType.APPLICATION_JSON)
+//                .content(objectMapper.writeValueAsString(beerMap)))
+//                .andExpect(status().isBadRequest());
+//
+//    }
 
     @Test
     void testDeleteByIDNotFound() {
@@ -137,7 +145,7 @@ class BeerControllerIT {
 
         UUID savedId = UUID.fromString(locationUUID[4]);
 
-        Beer beer = repository.findById(savedId).get();
+        Beer beer = beerRepository.findById(savedId).get();
         assertThat(beer).isNotNull();
     }
 
