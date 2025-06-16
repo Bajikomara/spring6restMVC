@@ -2,6 +2,7 @@ package baji.springframework.spring6restmvc.repositories;
 
 import baji.springframework.spring6restmvc.entities.Beer;
 import baji.springframework.spring6restmvc.model.BeerStyle;
+import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -15,6 +16,22 @@ import static org.junit.jupiter.api.Assertions.*;
 class BeerRepositoryTest {
     @Autowired
     BeerRepository beerRepository;
+
+    @Test
+    void testSaveBeerNameTooLong() {
+
+        assertThrows(ConstraintViolationException.class, () -> {
+            Beer savedBeer = beerRepository.save(Beer.builder()
+                    .beerName("MY BEER 0123456789 01234567890123456789012345678901234567890123456789012345678901234567890123456789")
+                    .beerStyle(BeerStyle.ALE)
+                    .upc("784521")
+                    .price(new BigDecimal("11.99"))
+                    .build());
+
+            beerRepository.flush();
+        });
+
+    }
 
     @Test
     void testSaveBeer() {
