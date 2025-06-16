@@ -28,13 +28,17 @@ public class CustomerController {
 
     @DeleteMapping({"{customerId}"})
     public ResponseEntity deleteById(@PathVariable("customerId") UUID customerId) {
-        customerService.deleteCustomerById(customerId);
+        if(!customerService.deleteCustomerById(customerId)){
+            throw new NotFoundException();
+        };
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping("{customerId}")
     public ResponseEntity updateById(@PathVariable("customerId") UUID customerId,@RequestBody CustomerDTO customer) {
-        customerService.updateCustomerByID(customerId, customer);
+        if (customerService.updateCustomerByID(customerId, customer).isEmpty()){
+            throw new NotFoundException();
+        }
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
@@ -53,7 +57,7 @@ public class CustomerController {
     }
     @RequestMapping(value = "{customerId}", method = RequestMethod.GET)
     public CustomerDTO getCustomerById(@PathVariable("customerId") UUID customerId) {
-        return customerService.getCustomerById(customerId);
+        return customerService.getCustomerById(customerId).orElseThrow(NotFoundException::new);
     }
 
 
