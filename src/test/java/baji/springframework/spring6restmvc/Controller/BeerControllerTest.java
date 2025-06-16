@@ -57,6 +57,18 @@ class BeerControllerTest {
     }
 
     @Test
+    void testCreatBeerNullBeerName() throws Exception {
+        BeerDTO beerDTO = BeerDTO.builder().build();
+        given(beerService.saveNewBeer(any(BeerDTO.class))).willReturn(beerServiceimpl.listBeers().get(1));
+
+        mockMvc.perform(post(BeerController.BEER_PATH)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(beerDTO)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
     void testpatchBeer() throws Exception {
         BeerDTO beer = beerServiceimpl.listBeers().get(0);
         Map<String, Object> beerMap = new HashMap<>();

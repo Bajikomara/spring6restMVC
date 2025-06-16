@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -51,7 +52,7 @@ public class BeerController {
 
     @PostMapping
 //    @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity handlepost(@RequestBody BeerDTO beer) {
+    public ResponseEntity handlepost(@Validated @RequestBody BeerDTO beer) {
 
         BeerDTO savedBeer = beerService.saveNewBeer(beer);
 
