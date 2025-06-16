@@ -34,7 +34,7 @@ public class CustomerController {
 
     @PutMapping("{customerId}")
     public ResponseEntity updateById(@PathVariable("customerId") UUID customerId,@RequestBody CustomerDTO customer) {
-        customerService.updateCustomerByID(customerId, customer);
+        customerService.updateCustomerById(customerId, customer);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
@@ -48,12 +48,12 @@ public class CustomerController {
 
     @RequestMapping(method = RequestMethod.GET)
     public List<CustomerDTO> getAllCustomers() {
-        return customerService.listCustomers();
+        return customerService.getAllCustomers();
 
     }
     @RequestMapping(value = "{customerId}", method = RequestMethod.GET)
     public CustomerDTO getCustomerById(@PathVariable("customerId") UUID customerId) {
-        return customerService.getCustomerById(customerId);
+        return customerService.getCustomerById(customerId).orElseThrow(NotFoundException::new);
     }
 
 

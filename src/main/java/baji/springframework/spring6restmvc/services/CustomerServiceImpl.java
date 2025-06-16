@@ -11,9 +11,8 @@ import java.util.*;
 public class CustomerServiceImpl implements CustomerService {
 
     private Map<UUID, CustomerDTO> customerMap;
-    public CustomerServiceImpl() {
-        this.customerMap = new HashMap<>();
 
+    public CustomerServiceImpl() {
         CustomerDTO customer1 = CustomerDTO.builder()
                 .id(UUID.randomUUID())
                 .name("Customer 1")
@@ -38,51 +37,61 @@ public class CustomerServiceImpl implements CustomerService {
                 .updateDate(LocalDateTime.now())
                 .build();
 
-
+        customerMap = new HashMap<>();
         customerMap.put(customer1.getId(), customer1);
         customerMap.put(customer2.getId(), customer2);
         customerMap.put(customer3.getId(), customer3);
     }
 
     @Override
-    public List<CustomerDTO> listCustomers() {
-        return new ArrayList<>(customerMap.values());
-    }
-
-    @Override
-    public CustomerDTO getCustomerById(UUID id) {
-
-        return customerMap.get(id);
-    }
-
-    @Override
-    public CustomerDTO saveNewCustomer(CustomerDTO customer) {
-        CustomerDTO savedCustomer = customer.builder()
-                .id(UUID.randomUUID())
-                .name(customer.getName())
-                .createdDate(LocalDateTime.now())
-                .updateDate(LocalDateTime.now())
-                .build();
-        customerMap.put(customer.getId(), savedCustomer);
-        return savedCustomer;
-    }
-    @Override
-    public void updateCustomerByID(UUID customerId, CustomerDTO customer){
-        CustomerDTO existing = customerMap.get(customerId);
-        existing.setName(customer.getName());
-        customerMap.put(existing.getId(), existing);
-    }
-    @Override
-    public void deleteCustomerById(UUID customerId) {
-        customerMap.remove(customerId);
-    }
-    @Override
-    public void patchCustomerById(UUID customerId, CustomerDTO customer) {
+    public Optional<CustomerDTO> patchCustomerById(UUID customerId, CustomerDTO customer) {
         CustomerDTO existing = customerMap.get(customerId);
 
         if (StringUtils.hasText(customer.getName())) {
             existing.setName(customer.getName());
         }
+
+        return Optional.of(existing);
+    }
+
+    @Override
+    public Boolean deleteCustomerById(UUID customerId) {
+        customerMap.remove(customerId);
+
+        return true;
+    }
+
+    @Override
+    public Optional<CustomerDTO> updateCustomerById(UUID customerId, CustomerDTO customer) {
+        CustomerDTO existing = customerMap.get(customerId);
+        existing.setName(customer.getName());
+        return Optional.of(existing);
+    }
+
+    @Override
+    public CustomerDTO saveNewCustomer(CustomerDTO customer) {
+
+        CustomerDTO savedCustomer = CustomerDTO.builder()
+                .id(UUID.randomUUID())
+                .version(1)
+                .updateDate(LocalDateTime.now())
+                .createdDate(LocalDateTime.now())
+                .name(customer.getName())
+                .build();
+
+        customerMap.put(savedCustomer.getId(), savedCustomer);
+
+        return savedCustomer;
+    }
+
+    @Override
+    public Optional<CustomerDTO> getCustomerById(UUID uuid) {
+        return Optional.of(customerMap.get(uuid));
+    }
+
+    @Override
+    public List<CustomerDTO> getAllCustomers() {
+        return new ArrayList<>(customerMap.values());
     }
 
 }
