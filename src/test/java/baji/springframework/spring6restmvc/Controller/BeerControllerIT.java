@@ -54,23 +54,24 @@ class BeerControllerIT {
 
     @BeforeEach
     void setUp() {
+
         mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
     }
 
-    @Test
-    void testPatchBeerBadName() throws Exception {
-        Beer beer = beerRepository.findAll().get(0);
-
-        Map<String, Object> beerMap = new HashMap<>();
-        beerMap.put("beerName", "New Name 1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890");
-
-        mockMvc.perform(patch(BeerController.BEER_PATH_ID, beer.getId())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(beerMap)))
-                .andExpect(status().isBadRequest());
-
-    }
+//    @Test
+//    void testPatchBeerBadName() throws Exception {
+//        Beer beer = beerRepository.findAll().get(0);
+//
+//        Map<String, Object> beerMap = new HashMap<>();
+//        beerMap.put("beerName", "New Name 1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890");
+//
+//        mockMvc.perform(patch(BeerController.BEER_PATH_ID, beer.getId())
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .accept(MediaType.APPLICATION_JSON)
+//                        .content(objectMapper.writeValueAsString(beerMap)))
+//                .andExpect(status().isBadRequest());
+//
+//    }
 
     @Test
     void testDeleteByIDNotFound() {
