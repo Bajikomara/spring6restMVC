@@ -4,7 +4,7 @@ import baji.springframework.spring6restmvc.entities.Customer;
 import baji.springframework.spring6restmvc.model.CustomerDTO;
 import org.mapstruct.Mapper;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface CustomerMapper {
     Customer customerDtoToCustomer(CustomerDTO dto);
     CustomerDTO customerToCustomerDTO(Customer customer);
