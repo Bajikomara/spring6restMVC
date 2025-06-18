@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.UUID;
@@ -66,7 +65,7 @@ public class BeerController {
     @RequestMapping(method = RequestMethod.GET)
     public List<BeerDTO> listBeers( @RequestParam(required = false) String beerName) {
 
-        return beerService.listBeers();
+        return beerService.listBeers(beerName);
     }
 
 
