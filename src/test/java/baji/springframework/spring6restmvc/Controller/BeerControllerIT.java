@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
+import static org.hamcrest.core.Is.is;
 
 import java.util.HashMap;
 import java.util.List;
@@ -26,7 +27,9 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -58,7 +61,14 @@ class BeerControllerIT {
         mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
     }
 
-//    @Test
+    @Test
+    void testListBeerbyName() throws Exception {
+        mockMvc.perform(get(BeerController.BEER_PATH)
+                .queryParam("beerName", "IPA"))
+                .andExpect(jsonPath("$.size()",is(100)));
+    }
+
+    //    @Test
 //    void testPatchBeerBadName() throws Exception {
 //        Beer beer = beerRepository.findAll().get(0);
 //
