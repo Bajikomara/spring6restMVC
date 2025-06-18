@@ -1,6 +1,7 @@
 package baji.springframework.spring6restmvc.Controller;
 
 import baji.springframework.spring6restmvc.model.BeerDTO;
+import baji.springframework.spring6restmvc.model.BeerStyle;
 import baji.springframework.spring6restmvc.services.BeerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -63,9 +64,10 @@ public class BeerController {
 
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<BeerDTO> listBeers( @RequestParam(required = false) String beerName) {
+    public List<BeerDTO> listBeers(@RequestParam(required = false) String beerName,
+                                   @RequestParam(required = false) BeerStyle beerStyle) {
 
-        return beerService.listBeers(beerName);
+        return beerService.listBeers(beerName, beerStyle);
     }
 
 
