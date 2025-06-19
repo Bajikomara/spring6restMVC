@@ -3,6 +3,7 @@ package baji.springframework.spring6restmvc.Controller;
 import baji.springframework.spring6restmvc.model.BeerDTO;
 import baji.springframework.spring6restmvc.model.BeerStyle;
 import baji.springframework.spring6restmvc.services.BeerService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -25,10 +26,12 @@ public class BeerController {
     public static final String BEER_PATH_ID = BEER_PATH + "/{beerId}";
 
     @PatchMapping({"{beerId}"})
+//    @PatchMapping(BEER_PATH_ID) to use this uncomment the above @RequestMapping("/api/v1/beer")
     public ResponseEntity updateBeerPatchByID(@PathVariable("beerId")UUID beerId, @RequestBody BeerDTO beer){
         beerService.patchBeerById(beerId, beer);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
+
 
     @DeleteMapping("{beerId}")
     public ResponseEntity deleteById(@PathVariable("beerId") UUID beerId){
