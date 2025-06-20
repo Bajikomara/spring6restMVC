@@ -1,12 +1,14 @@
 package baji.springframework.spring6restmvc.repositories;
 
 import baji.springframework.spring6restmvc.entities.Beer;
+import baji.springframework.spring6restmvc.entities.BeerOrder;
 import baji.springframework.spring6restmvc.entities.Customer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -32,12 +34,16 @@ class BeerOrderRepositoryTest {
         testbeer = beerRepository.findAll().get(0);
     }
 
+    @Transactional
     @Test
     void testBeerOrders() {
-        System.out.println(beerOrderRepository.count());
-        System.out.println(customerRepository.count());
-        System.out.println(beerRepository.count());
-        System.out.println(testcustomer.getName());
-        System.out.println(testbeer.getBeerName());
+        BeerOrder beerorder = BeerOrder.builder()
+                .customerRef("Test Order")
+                .customer(testcustomer)
+                .build();
+        BeerOrder savedOrderBeer = beerOrderRepository.saveAndFlush(beerorder);
+
+        System.out.println(savedOrderBeer.getCustomerRef());
+
     }
 }
