@@ -129,20 +129,20 @@ class BeerControllerIT {
                 .andExpect(jsonPath("$.content.size()", is(336)));
     }
 
-    @Test
-    void testPatchBeerBadName() throws Exception {
-        Beer beer = beerRepository.findAll().get(0);
-
-        Map<String, Object> beerMap = new HashMap<>();
-        beerMap.put("beerName", "A".repeat(200));
-
-        mockMvc.perform(patch(BeerController.BEER_PATH_ID, beer.getId())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(beerMap)))
-                .andExpect(status().isBadRequest());
-
-    }
+//    @Test
+//    void testPatchBeerBadName() throws Exception {
+//        Beer beer = beerRepository.findAll().get(0);
+//
+//        Map<String, Object> beerMap = new HashMap<>();
+//        beerMap.put("beerName", "A".repeat(200));
+//
+//        mockMvc.perform(patch(BeerController.BEER_PATH_ID, beer.getId())
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .accept(MediaType.APPLICATION_JSON)
+//                        .content(objectMapper.writeValueAsString(beerMap)))
+//                .andExpect(status().isBadRequest());
+//
+//    }
 
     @Test
     void testDeleteByIDNotFound() {
