@@ -64,7 +64,7 @@ class CustomerControllerTest {
         customerMap.put("name", "New Name");
 
         mockMvc.perform(patch("/api/v1/customer/" + customer.getId())
-                        .with(httpBasic(BeerControllerTest.USERNAME, BeerControllerTest.PASSWORD))
+                        .with(BeerControllerTest.jwtRequestPostProcessor)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(customerMap)))
@@ -79,7 +79,7 @@ class CustomerControllerTest {
         CustomerDTO customer = customerServiceImpl.listCustomers().get(0);
         given(customerService.deleteCustomerById(any())).willReturn(true);
         mockMvc.perform(delete("/api/v1/customer/" + customer.getId())
-                        .with(httpBasic(BeerControllerTest.USERNAME, BeerControllerTest.PASSWORD))
+                        .with(BeerControllerTest.jwtRequestPostProcessor)
         .accept(MediaType.APPLICATION_JSON))
         .andExpect(status().isNoContent());
 
@@ -97,7 +97,7 @@ class CustomerControllerTest {
                 .build()));
 
         mockMvc.perform(put("/api/v1/customer/" + customer.getId())
-                        .with(httpBasic(BeerControllerTest.USERNAME, BeerControllerTest.PASSWORD))
+                        .with(BeerControllerTest.jwtRequestPostProcessor)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(customer)))
@@ -114,7 +114,7 @@ class CustomerControllerTest {
 
         given(customerService.saveNewCustomer(any(CustomerDTO.class))).willReturn(customerServiceImpl.listCustomers().get(1));
         mockMvc.perform(post("/api/v1/customer")
-                        .with(httpBasic(BeerControllerTest.USERNAME, BeerControllerTest.PASSWORD))
+                        .with(BeerControllerTest.jwtRequestPostProcessor)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(customer)))
@@ -128,7 +128,7 @@ class CustomerControllerTest {
         given(customerService.listCustomers()).willReturn(customerServiceImpl.listCustomers());
 
         mockMvc.perform(get("/api/v1/customer")
-                        .with(httpBasic(BeerControllerTest.USERNAME, BeerControllerTest.PASSWORD))
+                        .with(BeerControllerTest.jwtRequestPostProcessor)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -139,7 +139,7 @@ class CustomerControllerTest {
     void getCustomerByIdNotFound() throws Exception {
         given(customerService.getCustomerById(any(UUID.class))).willThrow(NotFoundException.class);
         mockMvc.perform(get(CustomerController.CUSTOMER_PATH_ID,UUID.randomUUID())
-                        .with(httpBasic(BeerControllerTest.USERNAME, BeerControllerTest.PASSWORD)))
+                        .with(BeerControllerTest.jwtRequestPostProcessor))
 
                 .andExpect(status().isNotFound());
     }
@@ -149,7 +149,7 @@ class CustomerControllerTest {
         CustomerDTO testCustomer = customerServiceImpl.listCustomers().get(0);
         given(customerService.getCustomerById(testCustomer.getId())).willReturn(Optional.of(testCustomer));
         mockMvc.perform(get("/api/v1/customer/" + testCustomer.getId())
-                        .with(httpBasic(BeerControllerTest.USERNAME, BeerControllerTest.PASSWORD))
+                        .with(BeerControllerTest.jwtRequestPostProcessor)
         .accept(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(content().contentType(MediaType.APPLICATION_JSON))
