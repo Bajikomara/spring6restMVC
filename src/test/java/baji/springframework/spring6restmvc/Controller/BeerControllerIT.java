@@ -66,7 +66,7 @@ class BeerControllerIT {
     }
 
 
-    @Disabled // just for demo purposes
+//    @Disabled // just for demo purposes
     @Test
     void testUpdateBeerBadVersion() throws Exception {
         Beer beer = beerRepository.findAll().get(0);
